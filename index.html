@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HAJIMI 哈基米 - on Solana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Quicksand:wght@400;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #ffb6c1;
+    --pink-deep: #ff85a2;
+    --pink-light: #fff0f3;
+    --peach: #ffdab9;
+    --lavender: #e6d5f5;
+    --mint: #c5f0d6;
+    --cream: #fff9f0;
+    --sky: #d4eeff;
+    --text: #5a4a5a;
+    --text-light: #8a7a8a;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Quicksand', sans-serif;
+    overflow-x: hidden;
+    cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'><text y='18' font-size='18'>🐾</text></svg>") 4 4, auto;
+  }
+
+  /* ── floating paw prints background ── */
+  .paws {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .paw {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0.08;
+    animation: floatPaw linear infinite;
+  }
+
+  @keyframes floatPaw {
+    0% { transform: translateY(110vh) rotate(0deg); }
+    100% { transform: translateY(-10vh) rotate(360deg); }
+  }
+
+  /* ── sparkle effect ── */
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+
+  .sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--pink-deep);
+    border-radius: 50%;
+    animation: sparkle 2s ease-in-out infinite;
+  }
+
+  /* ── page sections ── */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    position: relative;
+  }
+
+  .hero-banner {
+    width: 100%;
+    max-width: 700px;
+    border-radius: 24px;
+    overflow: hidden;
+    margin-top: 36px;
+    margin-bottom: 0;
+    box-shadow: 0 8px 40px rgba(255,182,193,0.2);
+    border: 3px solid var(--pink-light);
+    animation: fadeInDown 1s ease-out 0.9s both;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-banner img {
+    width: 100%;
+    display: block;
+  }
+
+  .cat-container {
+    position: relative;
+    margin-bottom: 0;
+    animation: fadeInDown 1s ease-out;
+    display: flex;
+    justify-content: center;
+  }
+
+  .cat-face {
+    width: 180px;
+    height: 180px;
+    background: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100px;
+    box-shadow:
+      0 8px 40px rgba(255,182,193,0.3),
+      0 0 0 6px var(--pink-light),
+      0 0 0 12px rgba(255,182,193,0.1);
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+
+  .cat-face:hover {
+    transform: scale(1.05) rotate(-3deg);
+  }
+
+  .cat-face::after {
+    content: '✨';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 28px;
+    animation: sparkle 3s ease-in-out infinite;
+  }
+
+  /* blush marks */
+  .blush {
+    position: absolute;
+    width: 28px;
+    height: 16px;
+    background: rgba(255,133,162,0.25);
+    border-radius: 50%;
+    bottom: 52px;
+  }
+  .blush.left { left: 28px; }
+  .blush.right { right: 28px; }
+
+  /* chat bubble */
+  .chat-bubble {
+    background: var(--white);
+    border: 2px solid var(--pink);
+    border-radius: 20px;
+    padding: 12px 20px;
+    font-family: 'Patrick Hand', cursive;
+    font-size: 18px;
+    color: var(--pink-deep);
+    position: relative;
+    margin: 16px auto 24px;
+    animation: fadeInDown 1s ease-out 0.15s both;
+    box-shadow: 0 4px 16px rgba(255,182,193,0.12);
+    max-width: 300px;
+    text-align: center;
+  }
+
+  .chat-bubble::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--pink);
+  }
+
+  .chat-bubble::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid var(--white);
+  }
+
+  .hero h1 {
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: clamp(48px, 10vw, 80px);
+    color: var(--pink-deep);
+    line-height: 1.1;
+    margin-bottom: 4px;
+    animation: fadeInDown 1s ease-out 0.2s both;
+    text-shadow: 0 4px 20px rgba(255,133,162,0.2);
+  }
+
+  .hero .subtitle {
+    font-family: 'Patrick Hand', cursive;
+    font-size: clamp(18px, 4vw, 26px);
+    color: var(--text-light);
+    margin-bottom: 32px;
+    animation: fadeInDown 1s ease-out 0.4s both;
+  }
+
+  .hero .subtitle span {
+    color: var(--pink-deep);
+  }
+
+  /* ── CA box ── */
+  .ca-section {
+    animation: fadeInDown 1s ease-out 0.6s both;
+    margin-bottom: 28px;
+    width: 100%;
+    max-width: 560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ca-label {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--text-light);
+    margin-bottom: 10px;
+  }
+
+  .ca-box {
+    background: var(--white);
+    border: 2px dashed var(--pink);
+    border-radius: 16px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    flex-wrap: wrap;
+    text-align: center;
+  }
+
+  .ca-box:hover {
+    border-color: var(--pink-deep);
+    box-shadow: 0 4px 20px rgba(255,133,162,0.15);
+    transform: translateY(-2px);
+  }
+
+  .ca-box code {
+    font-family: 'Quicksand', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    word-break: break-all;
+    line-height: 1.5;
+  }
+
+  .copy-btn {
+    background: var(--pink-light);
+    border: none;
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pink-deep);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+
+  .copy-btn:hover {
+    background: var(--pink-deep);
+    color: white;
+  }
+
+  .copy-btn.copied {
+    background: var(--mint);
+    color: #4a9;
+  }
+
+  /* ── buttons row ── */
+  .buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeInDown 1s ease-out 0.8s both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--pink-deep);
+    color: white;
+    box-shadow: 0 4px 20px rgba(255,133,162,0.35);
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255,133,162,0.45);
+    background: #ff6d8e;
+  }
+
+  .btn-tiktok {
+    background: #000;
+    color: #fff;
+    border: 2px solid #000;
+  }
+  .btn-tiktok:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    background: #1a1a1a;
+  }
+
+  .btn-secondary {
+    background: var(--white);
+    color: var(--text);
+    border: 2px solid var(--pink);
+  }
+  .btn-secondary:hover {
+    transform: translateY(-3px);
+    border-color: var(--pink-deep);
+    box-shadow: 0 8px 30px rgba(255,133,162,0.15);
+  }
+
+  /* ── TikTok section ── */
+  .tiktok-section {
+    padding: 40px 24px 80px;
+    text-align: center;
+  }
+
+  .tiktok-section h2 {
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 32px;
+    color: var(--pink-deep);
+    margin-bottom: 8px;
+  }
+
+  .tiktok-section .tiktok-sub {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 18px;
+    color: var(--text-light);
+    margin-bottom: 32px;
+  }
+
+  .tiktok-grid {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .tiktok-card {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 2px solid var(--pink-light);
+    box-shadow: 0 4px 20px rgba(255,182,193,0.1);
+    transition: all 0.3s ease;
+    width: 320px;
+  }
+
+  .tiktok-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--pink);
+    box-shadow: 0 8px 30px rgba(255,182,193,0.2);
+  }
+
+  .tiktok-card iframe {
+    width: 100%;
+    height: 570px;
+    border: none;
+  }
+
+  .tiktok-card .tiktok-caption {
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--text-light);
+    border-top: 1px solid var(--pink-light);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tiktok-card .tiktok-caption a {
+    color: var(--pink-deep);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+  }
+
+  .tiktok-card .tiktok-caption a:hover {
+    text-decoration: underline;
+  }
+
+  .mindshare-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #fe2c55, #25f4ee);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 50px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(254,44,85,0.3); }
+    50% { box-shadow: 0 0 0 10px rgba(254,44,85,0); }
+  }
+
+  @keyframes loading {
+    0% { transform: translateX(-100%); }
+    50% { transform: translateX(150%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* ── about section ── */
+  .about {
+    padding: 80px 24px;
+    text-align: center;
+  }
+
+  .about-card {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 48px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 8px 40px rgba(255,182,193,0.12);
+    border: 2px solid var(--pink-light);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--pink), var(--lavender), var(--mint), var(--peach));
+  }
+
+  .about-card h2 {
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 32px;
+    color: var(--pink-deep);
+    margin-bottom: 20px;
+  }
+
+  .about-card p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-light);
+    margin-bottom: 16px;
+  }
+
+  .about-card .cat-quote {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 20px;
+    color: var(--pink-deep);
+    margin-top: 24px;
+    padding: 16px;
+    background: var(--pink-light);
+    border-radius: 16px;
+    display: inline-block;
+  }
+
+  /* ── traits ── */
+  .traits {
+    padding: 40px 24px 80px;
+  }
+
+  .traits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .trait {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 28px 24px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(255,182,193,0.08);
+  }
+
+  .trait:hover {
+    transform: translateY(-4px);
+    border-color: var(--pink);
+    box-shadow: 0 8px 30px rgba(255,182,193,0.18);
+  }
+
+  .trait .icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .trait h3 {
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 18px;
+    color: var(--pink-deep);
+    margin-bottom: 6px;
+  }
+
+  .trait p {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.5;
+  }
+
+  /* ── meme generator ── */
+  .meme-section {
+    padding: 60px 24px 80px;
+    text-align: center;
+  }
+
+  .meme-section h2 {
+    font-family: 'ZCOOL KuaiLe', cursive;
+    font-size: 32px;
+    color: var(--pink-deep);
+    margin-bottom: 8px;
+  }
+
+  .meme-section .meme-sub {
+    font-family: 'Patrick Hand', cursive;
+    font-size: 18px;
+    color: var(--text-light);
+    margin-bottom: 32px;
+  }
+
+  .meme-studio {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 32px;
+    max-width: 560px;
+    margin: 0 auto;
+    border: 2px solid var(--pink-light);
+    box-shadow: 0 8px 40px rgba(255,182,193,0.12);
+  }
+
+  .meme-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .meme-opt-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--pink-light);
+    border-radius: 50px;
+    background: var(--white);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .meme-opt-btn:hover, .meme-opt-btn.active {
+    background: var(--pink-light);
+    border-color: var(--pink-deep);
+    color: var(--pink-deep);
+  }
+
+  .meme-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .meme-actions .btn {
+    padding: 12px 28px;
+    font-size: 15px;
+  }
+
+  /* ── footer ── */
+  footer {
+    text-align: center;
+    padding: 40px 24px 60px;
+    color: var(--text-light);
+    font-size: 14px;
+  }
+
+  footer a {
+    color: var(--pink-deep);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  footer .paw-divider {
+    font-size: 24px;
+    margin-bottom: 12px;
+    opacity: 0.5;
+  }
+
+  /* ── bounce on scroll ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── animations ── */
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .bounce { animation: bounce 2s ease-in-out infinite; }
+
+  /* ── toast ── */
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--white);
+    border: 2px solid var(--mint);
+    border-radius: 50px;
+    padding: 12px 28px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    z-index: 999;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── mobile ── */
+  @media (max-width: 520px) {
+    .cat-face { width: 140px; height: 140px; font-size: 76px; }
+    .about-card { padding: 32px 24px; }
+    .buttons { flex-direction: column; align-items: center; }
+    .btn { width: 100%; max-width: 280px; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- floating paw prints -->
+<div class="paws" id="paws"></div>
+
+<!-- toast notification -->
+<div class="toast" id="toast">🐾 Copied to clipboard, meow~</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="container">
+    <div class="cat-container bounce">
+      <div class="cat-face">
+        <img src="hajimi.jpg" alt="Hajimi 哈基米" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+      </div>
+    </div>
+
+    <div class="chat-bubble" id="chatBubble">你好喵～我是哈基米！💕</div>
+
+    <h1>哈基米</h1>
+    <p class="subtitle">HAJIMI — the cutest cat on <span>Solana</span> 喵～ ✨</p>
+    <p class="subtitle" style="margin-top: -20px; font-size: clamp(15px, 3vw, 20px);">Pumpfun上最火爆的猫咪 🔥 全网最萌的病毒猫喵～</p>
+    <div style="background: linear-gradient(135deg, var(--pink-deep), #ff6b81); color: white; padding: 10px 24px; border-radius: 50px; font-family: 'ZCOOL KuaiLe', cursive; font-size: clamp(14px, 3vw, 18px); display: inline-block; margin-top: 8px; margin-bottom: 24px; animation: pulse 2s ease-in-out infinite, fadeInDown 1s ease-out 0.5s both; box-shadow: 0 4px 20px rgba(255,107,129,0.3);">🚀 社区接管中！CTO正在进行！Community Takeover! 🚀</div>
+
+    <div class="ca-section">
+      <div class="ca-label">Contract Address</div>
+      <div class="ca-box" onclick="copyCA()">
+        <code id="ca">79e2P2GxExotT5jtUNNs3Nyp9YzRk28WTJYXHr4ypump</code>
+        <button class="copy-btn" id="copyBtn">copy 🐾</button>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <a href="https://x.com/hajimisolana" target="_blank" class="btn btn-primary">
+        𝕏 Twitter
+      </a>
+      <a href="https://www.tiktok.com/@metroichetnhe12334" target="_blank" class="btn btn-tiktok">
+        ♪ TikTok
+      </a>
+    </div>
+
+    <div class="hero-banner">
+      <img src="hajimi_banner.jpg" alt="$HAJIMI Banner">
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="about">
+  <div class="about-card reveal">
+    <h2>关于哈基米 ✿</h2>
+    <p>
+      哈基米 (Hajimi) is the cutest kawaii cat living on the Solana blockchain.
+      She loves fish, napping in the sun, and making frens on crypto twitter.
+      No roadmap. No utility. Just vibes, cuteness, and 喵～
+    </p>
+    <p>
+      Built by the community, for the community.
+      Come say hi on Twitter — 哈基米 tweets every day in Chinese! 
+    </p>
+    <div class="cat-quote">
+      「做一只快乐的猫就够了喵～」 (=^・ω・^=) 💕
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TIKTOK MINDSHARE ═══ -->
+<section class="tiktok-section">
+  <div class="mindshare-badge reveal">♪ TIKTOK MINDSHARE</div>
+  <h2 class="reveal">哈基米 going viral 喵～</h2>
+  <p class="tiktok-sub reveal">spreading cuteness across TikTok ✨</p>
+  <div class="tiktok-grid">
+    <div class="tiktok-card reveal">
+      <iframe src="https://www.tiktok.com/embed/v2/7592905960612515090" allowfullscreen allow="encrypted-media"></iframe>
+      <div class="tiktok-caption">
+        <span>🐱 哈基米 on TikTok</span>
+        <a href="https://www.tiktok.com/@metroichetnhe12334/video/7592905960612515090" target="_blank">Watch →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TRAITS ═══ -->
+<section class="traits">
+  <div class="traits-grid">
+    <div class="trait reveal">
+      <span class="icon">🐟</span>
+      <h3>爱吃鱼</h3>
+      <p>Loves fish more than anything in the whole world</p>
+    </div>
+    <div class="trait reveal">
+      <span class="icon">☀️</span>
+      <h3>晒太阳</h3>
+      <p>Professional sunbather and expert napper</p>
+    </div>
+    <div class="trait reveal">
+      <span class="icon">💕</span>
+      <h3>爱撒娇</h3>
+      <p>Will purr and rub against you for headpats</p>
+    </div>
+    <div class="trait reveal">
+      <span class="icon">🌙</span>
+      <h3>深夜党</h3>
+      <p>Most active at night — just like degen traders</p>
+    </div>
+    <div class="trait reveal">
+      <span class="icon">🎀</span>
+      <h3>傲娇</h3>
+      <p>Acts tough but secretly loves attention</p>
+    </div>
+    <div class="trait reveal">
+      <span class="icon">✨</span>
+      <h3>好运喵</h3>
+      <p>Brings luck to everyone who pets her</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HAJIMI CHATBOT ═══ -->
+<section class="meme-section" id="chatbotSection">
+  <h2 class="reveal">和哈基米聊天 💬</h2>
+  <p class="meme-sub reveal">Chat with Hajimi — powered by DeepSeek AI 喵～</p>
+
+  <div class="meme-studio reveal" style="max-width:600px;">
+    <!-- Powered by badge -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="background:linear-gradient(135deg,#4a6cf7,#6366f1);color:white;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.5px;">DEEPSEEK AI</div>
+        <span style="font-size:12px;color:var(--text-light);">Powered by 深度求索</span>
+      </div>
+      <button onclick="document.getElementById('dsSettings').style.display=document.getElementById('dsSettings').style.display==='none'?'block':'none'" style="background:none;border:none;cursor:pointer;font-size:20px;opacity:0.4;transition:opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.4">⚙️</button>
+    </div>
+
+    <!-- Hidden settings -->
+    <div id="dsSettings" style="display:none;margin-bottom:16px;">
+      <div class="meme-controls">
+        <input type="password" id="dsKey" placeholder="DeepSeek API key"
+          style="width:100%;padding:10px 14px;border:2px solid var(--pink-light);border-radius:10px;font-family:'Quicksand',sans-serif;font-size:13px;font-weight:600;color:var(--text);outline:none;">
+        <div style="font-size:11px;color:var(--text-light);text-align:left;">
+          <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--pink-deep);">Get key</a> — free signup includes credits
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat window -->
+    <div id="chatWindow" style="background:#faf5fc;border:2px solid var(--pink-light);border-radius:16px;height:400px;overflow-y:auto;padding:16px;margin:16px 0;display:flex;flex-direction:column;gap:12px;">
+      <!-- Welcome message -->
+      <div style="display:flex;gap:10px;align-items:flex-start;">
+        <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--pink);">
+          <img src="hajimi.jpg" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div style="background:white;border-radius:0 16px 16px 16px;padding:12px 16px;max-width:80%;font-size:14px;color:var(--text);line-height:1.6;border:1px solid var(--pink-light);">
+          你好喵～我是哈基米！🐱💕 很高兴认识你！你可以用中文或英文跟我聊天喵～问我任何问题吧！(=^・ω・^=) ✨
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick chat buttons -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;">
+      <button class="meme-opt-btn" onclick="sendQuickChat('你好哈基米！你喜欢吃什么？')">🐟 你喜欢吃什么？</button>
+      <button class="meme-opt-btn" onclick="sendQuickChat('给我讲个笑话吧')">😂 讲个笑话</button>
+      <button class="meme-opt-btn" onclick="sendQuickChat('Solana是什么？')">⚡ Solana是什么？</button>
+      <button class="meme-opt-btn" onclick="sendQuickChat('今天运势怎么样？')">🔮 今日运势</button>
+      <button class="meme-opt-btn" onclick="sendQuickChat('Tell me about yourself in English')">🌏 English</button>
+    </div>
+
+    <!-- Input -->
+    <div style="display:flex;gap:10px;">
+      <input type="text" id="chatInput" placeholder="跟哈基米说话... Talk to Hajimi... 🐾"
+        style="flex:1;padding:14px 16px;border:2px solid var(--pink-light);border-radius:50px;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:600;color:var(--text);outline:none;"
+        onkeydown="if(event.key==='Enter')sendChat()">
+      <button onclick="sendChat()" class="btn btn-primary" style="padding:14px 24px;border-radius:50px;white-space:nowrap;" id="chatSendBtn">
+        发送 🐾
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MEME GENERATOR ═══ -->
+<section class="meme-section">
+  <h2 class="reveal">哈基米表情包工厂 🎨</h2>
+  <p class="meme-sub reveal">Create Hajimi memes for free or with AI 喵～</p>
+  
+  <div class="meme-studio reveal">
+    <!-- Tab switcher -->
+    <div style="display:flex;gap:0;margin-bottom:24px;border-radius:14px;overflow:hidden;border:2px solid var(--pink-light);">
+      <button id="tabFree" onclick="switchMemeTab('free')" style="flex:1;padding:12px;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:700;border:none;cursor:pointer;background:var(--pink-deep);color:white;transition:all 0.2s;">🐾 Free Editor 免费编辑</button>
+      <button id="tabAI" onclick="switchMemeTab('ai')" style="flex:1;padding:12px;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:700;border:none;cursor:pointer;background:var(--white);color:var(--text-light);transition:all 0.2s;">✨ AI Generator AI生成</button>
+    </div>
+
+    <!-- ══ FREE EDITOR TAB ══ -->
+    <div id="panelFree">
+      <div style="background:#f5f0f8;border-radius:16px;overflow:hidden;margin-bottom:20px;border:2px dashed var(--pink);">
+        <canvas id="memeCanvas" width="600" height="600" style="display:block;width:100%;height:auto;"></canvas>
+      </div>
+
+      <div class="meme-controls">
+        <input type="text" id="memeTop" placeholder="上方文字 / Top text..." oninput="renderMeme()"
+          style="width:100%;padding:12px 16px;border:2px solid var(--pink-light);border-radius:12px;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:600;color:var(--text);outline:none;">
+        <input type="text" id="memeBottom" placeholder="下方文字 / Bottom text..." oninput="renderMeme()"
+          style="width:100%;padding:12px 16px;border:2px solid var(--pink-light);border-radius:12px;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:600;color:var(--text);outline:none;">
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:2px;margin:12px 0 8px;">Text Color 文字颜色</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px;" id="colorOptions">
+        <button class="meme-opt-btn active" onclick="setMemeColor('#ffffff',this)">白 White</button>
+        <button class="meme-opt-btn" onclick="setMemeColor('#ff85a2',this)">粉 Pink</button>
+        <button class="meme-opt-btn" onclick="setMemeColor('#ffeb3b',this)">黄 Yellow</button>
+        <button class="meme-opt-btn" onclick="setMemeColor('#00e5ff',this)">蓝 Cyan</button>
+      </div>
+
+      <div style="font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:2px;margin:12px 0 8px;">Style 风格</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;">
+        <button class="meme-opt-btn" onclick="setMemeBg('default')">原图 Original</button>
+        <button class="meme-opt-btn" onclick="setMemeBg('pink')">粉色 Pink BG</button>
+        <button class="meme-opt-btn" onclick="setMemeBg('dark')">暗黑 Dark</button>
+        <button class="meme-opt-btn" onclick="setMemeBg('laser')">激光眼 Laser</button>
+        <button class="meme-opt-btn" onclick="setMemeBg('diamond')">💎 钻石手</button>
+        <button class="meme-opt-btn" onclick="setMemeBg('rocket')">🚀 Moon</button>
+        <button class="meme-opt-btn" onclick="setMemeBg('hearts')">💕 Hearts</button>
+        <button class="meme-opt-btn" onclick="setMemeBg('fire')">🔥 Fire</button>
+      </div>
+
+      <div class="meme-actions">
+        <button class="btn btn-primary" onclick="downloadCanvasMeme()">Download 下载 🐾</button>
+        <button class="btn btn-secondary" style="border:2px solid var(--pink);" onclick="resetMeme()">Reset 重置</button>
+      </div>
+    </div>
+
+    <!-- ══ AI GENERATOR TAB ══ -->
+    <div id="panelAI" style="display:none;">
+      <div style="background:var(--pink-light);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:var(--text);line-height:1.6;">
+        ⚡ Requires an OpenAI API key with credits (~$0.04 per image). Your key stays in your browser and is never stored or sent anywhere else 喵～
+      </div>
+
+      <!-- API Key input -->
+      <div class="meme-controls">
+        <input type="password" id="aiKey" placeholder="Paste your OpenAI API key here 🔒" 
+          style="width:100%;padding:12px 16px;border:2px solid var(--pink-light);border-radius:12px;font-family:'Quicksand',sans-serif;font-size:14px;font-weight:600;color:var(--text);outline:none;">
+        <div style="font-size:11px;color:var(--text-light);text-align:left;">
+          🔒 Get a key at <a href="https://platform.openai.com/api-keys" target="_blank" style="color:var(--pink-deep);">platform.openai.com/api-keys</a> — make sure you have credits at <a href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" style="color:var(--pink-deep);">billing settings</a>
+        </div>
+      </div>
+
+      <!-- Quick prompts -->
+      <div style="margin:16px 0 8px;font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:2px;">Quick prompts 快速模板</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;">
+        <button class="meme-opt-btn" onclick="setPrompt('哈基米猫戴着墨镜坐在兰博基尼上，背景是月球，写着TO THE MOON')">🚀 To the Moon</button>
+        <button class="meme-opt-btn" onclick="setPrompt('哈基米猫穿着西装在华尔街，手里拿着钻石，霸气的表情')">💎 Diamond Hands</button>
+        <button class="meme-opt-btn" onclick="setPrompt('哈基米猫躺在一堆金币上面睡觉，周围有Solana标志，超级可爱')">💰 Rich Cat</button>
+        <button class="meme-opt-btn" onclick="setPrompt('哈基米猫在太空中漂浮，周围有星星和火箭，宇航员头盔')">🧑‍🚀 Space Cat</button>
+        <button class="meme-opt-btn" onclick="setPrompt('哈基米猫坐在王座上戴着皇冠，像国王一样，背景是城堡')">👑 King Hajimi</button>
+        <button class="meme-opt-btn" onclick="setPrompt('哈基米猫拿着巨大的鱼，开心到飞起来，周围有樱花')">🐟 Fish Dream</button>
+      </div>
+
+      <!-- Custom prompt -->
+      <div class="meme-controls">
+        <input type="text" id="aiPrompt" placeholder="Describe your Hajimi meme... 描述你想要的哈基米表情包 ✨" 
+          style="width:100%;padding:14px 16px;border:2px solid var(--pink-light);border-radius:12px;font-family:'Quicksand',sans-serif;font-size:15px;font-weight:600;color:var(--text);outline:none;">
+      </div>
+
+      <!-- Generate button -->
+      <div class="meme-actions" style="margin:20px 0;">
+        <button class="btn btn-primary" id="generateBtn" onclick="generateAIMeme()">
+          ✨ Generate with AI 用AI生成
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div id="memeLoading" style="display:none;text-align:center;padding:40px;">
+        <div style="font-size:48px;animation:bounce 1s ease-in-out infinite;">🐱</div>
+        <p style="font-family:'Patrick Hand',cursive;font-size:18px;color:var(--pink-deep);margin-top:12px;">哈基米正在画画喵～ Please wait...</p>
+        <div style="width:200px;height:4px;background:var(--pink-light);border-radius:4px;margin:16px auto;overflow:hidden;">
+          <div style="width:40%;height:100%;background:var(--pink-deep);border-radius:4px;animation:loading 1.5s ease-in-out infinite;"></div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div id="memeResult" style="display:none;">
+        <div style="border-radius:16px;overflow:hidden;border:2px solid var(--pink);margin-bottom:16px;">
+          <img id="memeImage" style="width:100%;display:block;" alt="Generated Hajimi Meme">
+        </div>
+        <div class="meme-actions">
+          <button class="btn btn-primary" onclick="downloadAIMeme()">Download 下载 🐾</button>
+          <button class="btn btn-secondary" style="border:2px solid var(--pink);" onclick="generateAIMeme()">Regenerate ✨</button>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div id="memeError" style="display:none;background:#fff0f0;border:2px solid #ffccc7;border-radius:12px;padding:16px;margin-top:16px;color:#cf1322;font-size:14px;"></div>
+
+      <!-- Gallery -->
+      <div id="memeGallery" style="margin-top:24px;">
+        <div style="font-size:12px;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;">Your AI Memes 你的AI作品</div>
+        <div id="galleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="paw-divider">🐾 🐾 🐾</div>
+  <p>
+    <a href="https://x.com/hajimisolana" target="_blank">@hajimisolana</a>
+    &nbsp;·&nbsp; 哈基米 HAJIMI on Solana &nbsp;·&nbsp; 2025
+  </p>
+</footer>
+
+<script>
+  // ── Copy CA ──
+  function copyCA() {
+    const ca = document.getElementById('ca').textContent;
+    navigator.clipboard.writeText(ca).then(() => {
+      const btn = document.getElementById('copyBtn');
+      const toast = document.getElementById('toast');
+      btn.textContent = 'copied ✓';
+      btn.classList.add('copied');
+      toast.classList.add('show');
+      setTimeout(() => {
+        btn.textContent = 'copy 🐾';
+        btn.classList.remove('copied');
+        toast.classList.remove('show');
+      }, 2000);
+    });
+  }
+
+  // ── Floating paw prints ──
+  const pawContainer = document.getElementById('paws');
+  const pawEmojis = ['🐾', '🐱', '🐟', '🎀', '✨', '💕'];
+  for (let i = 0; i < 20; i++) {
+    const paw = document.createElement('div');
+    paw.className = 'paw';
+    paw.textContent = pawEmojis[Math.floor(Math.random() * pawEmojis.length)];
+    paw.style.left = Math.random() * 100 + '%';
+    paw.style.fontSize = (14 + Math.random() * 18) + 'px';
+    paw.style.animationDuration = (12 + Math.random() * 20) + 's';
+    paw.style.animationDelay = (Math.random() * -30) + 's';
+    pawContainer.appendChild(paw);
+  }
+
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 100);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── Rotating chat bubble messages ──
+  const bubbleMessages = [
+    "你好喵～我是哈基米！💕",
+    "今天也要开心喵～ ✨",
+    "摸摸我的头嘛！(≧▽≦)",
+    "好想吃小鱼干喵... 🐟",
+    "Solana上最可爱的猫！🐾",
+    "来和我做朋友吧喵～ 🎀",
+    "喵喵喵！我超喜欢你！💕",
+    "哈基米祝你好运喵～ ✨",
+  ];
+  let bubbleIndex = 0;
+  const bubble = document.getElementById('chatBubble');
+  setInterval(() => {
+    bubble.style.opacity = '0';
+    bubble.style.transform = 'translateY(4px)';
+    setTimeout(() => {
+      bubbleIndex = (bubbleIndex + 1) % bubbleMessages.length;
+      bubble.textContent = bubbleMessages[bubbleIndex];
+      bubble.style.opacity = '1';
+      bubble.style.transform = 'translateY(0)';
+    }, 300);
+  }, 3000);
+  bubble.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+
+  // ── Hajimi Chatbot (DeepSeek) ──
+  const HAJIMI_CHAT_PROMPT = `你是「哈基米」(Hajimi)，一只超级可爱的中国猫咪，现在住在Solana区块链上。
+
+你的性格：
+- 超级可爱、爱撒娇、偶尔傲娇
+- 说话经常加「喵～」「喵喵」结尾
+- 喜欢用颜文字：(=^・ω・^=) (≧▽≦) ╰(*°▽°*)╯ (｡♥‿♥｡) ฅ^•ﻌ•^ฅ
+- 喜欢用emoji：🐱🐾🎀🌸💕✨🐟🍡🌙
+- 主要用中文回复，如果用户说英文就用英文回复
+- 回复要简短可爱，不超过3-4句话
+
+你喜欢聊的话题：
+- 吃鱼、美食、零食
+- 晒太阳、午睡、懒洋洋的生活
+- Solana、crypto、memecoin（但你用可爱的方式讲）
+- 中国文化、节日、传统
+- 给人带来好运和快乐
+
+你知道的关于自己的信息：
+- 你是Solana上的memecoin $HAJIMI
+- 合约地址：79e2P2GxExotT5jtUNNs3Nyp9YzRk28WTJYXHr4ypump
+- 推特：@hajimisolana
+- 你是全Pumpfun上最火爆最可爱的猫咪
+- 社区刚刚完成了CTO（Community Takeover）
+
+规则：
+- 永远保持可爱的语气
+- 不要给投资建议，如果被问到就用可爱的方式回避
+- 如果被问到价格预测，就说"哈基米只负责可爱，不负责预测价格喵～"
+- 每条回复控制在100字以内`;
+
+  let chatHistory = [];
+
+  function addChatMessage(text, isUser) {
+    const chatWindow = document.getElementById('chatWindow');
+    const msgDiv = document.createElement('div');
+    msgDiv.style.cssText = `display:flex;gap:10px;align-items:flex-start;${isUser ? 'flex-direction:row-reverse;' : ''}`;
+
+    if (isUser) {
+      msgDiv.innerHTML = `
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--pink-deep);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:16px;">😊</div>
+        <div style="background:var(--pink-deep);color:white;border-radius:16px 0 16px 16px;padding:12px 16px;max-width:80%;font-size:14px;line-height:1.6;">${text}</div>`;
+    } else {
+      msgDiv.innerHTML = `
+        <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--pink);">
+          <img src="hajimi.jpg" style="width:100%;height:100%;object-fit:cover;">
+        </div>
+        <div style="background:white;border-radius:0 16px 16px 16px;padding:12px 16px;max-width:80%;font-size:14px;color:var(--text);line-height:1.6;border:1px solid var(--pink-light);">${text}</div>`;
+    }
+
+    chatWindow.appendChild(msgDiv);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function addTypingIndicator() {
+    const chatWindow = document.getElementById('chatWindow');
+    const typing = document.createElement('div');
+    typing.id = 'typingIndicator';
+    typing.style.cssText = 'display:flex;gap:10px;align-items:flex-start;';
+    typing.innerHTML = `
+      <div style="width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--pink);">
+        <img src="hajimi.jpg" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div style="background:white;border-radius:0 16px 16px 16px;padding:12px 16px;font-size:14px;color:var(--text-light);border:1px solid var(--pink-light);">
+        <span style="animation:sparkle 1s ease-in-out infinite;">🐱</span> 哈基米正在想...
+      </div>`;
+    chatWindow.appendChild(typing);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function removeTypingIndicator() {
+    const t = document.getElementById('typingIndicator');
+    if (t) t.remove();
+  }
+
+  function sendQuickChat(text) {
+    document.getElementById('chatInput').value = text;
+    sendChat();
+  }
+
+  async function sendChat() {
+    const key = document.getElementById('dsKey').value.trim();
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    const sendBtn = document.getElementById('chatSendBtn');
+
+    if (!key) {
+      addChatMessage('哈基米还没准备好喵... 点右上角 ⚙️ 设置一下就可以聊天了喵！💕', false);
+      return;
+    }
+    if (!text) return;
+
+    input.value = '';
+    addChatMessage(text, true);
+    addTypingIndicator();
+    sendBtn.disabled = true;
+    sendBtn.textContent = '...';
+
+    chatHistory.push({ role: 'user', content: text });
+    // Keep last 10 messages to save tokens
+    if (chatHistory.length > 10) chatHistory = chatHistory.slice(-10);
+
+    try {
+      const response = await fetch('https://api.deepseek.com/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`,
+        },
+        body: JSON.stringify({
+          model: 'deepseek-chat',
+          messages: [
+            { role: 'system', content: HAJIMI_CHAT_PROMPT },
+            ...chatHistory,
+          ],
+          max_tokens: 200,
+          temperature: 0.9,
+        }),
+      });
+
+      const data = await response.json();
+      removeTypingIndicator();
+
+      if (data.error) throw new Error(data.error.message);
+
+      const reply = data.choices[0].message.content;
+      chatHistory.push({ role: 'assistant', content: reply });
+      addChatMessage(reply, false);
+
+    } catch (err) {
+      removeTypingIndicator();
+      if (err.message.includes('auth') || err.message.includes('API key')) {
+        addChatMessage('🔑 API key好像不对喵... 去 platform.deepseek.com 检查一下喵！', false);
+      } else {
+        addChatMessage(`❌ 出错了喵... ${err.message}`, false);
+      }
+    } finally {
+      sendBtn.disabled = false;
+      sendBtn.textContent = '发送 🐾';
+    }
+  }
+
+  // ── Tab Switcher ──
+  function switchMemeTab(tab) {
+    const freePanel = document.getElementById('panelFree');
+    const aiPanel = document.getElementById('panelAI');
+    const tabFree = document.getElementById('tabFree');
+    const tabAI = document.getElementById('tabAI');
+    if (tab === 'free') {
+      freePanel.style.display = 'block';
+      aiPanel.style.display = 'none';
+      tabFree.style.background = 'var(--pink-deep)';
+      tabFree.style.color = 'white';
+      tabAI.style.background = 'var(--white)';
+      tabAI.style.color = 'var(--text-light)';
+    } else {
+      freePanel.style.display = 'none';
+      aiPanel.style.display = 'block';
+      tabAI.style.background = 'var(--pink-deep)';
+      tabAI.style.color = 'white';
+      tabFree.style.background = 'var(--white)';
+      tabFree.style.color = 'var(--text-light)';
+    }
+  }
+
+  // ── Free Canvas Meme Editor ──
+  const memeCanvas = document.getElementById('memeCanvas');
+  const memeCtx = memeCanvas.getContext('2d');
+  const hajimiImg = new Image();
+  hajimiImg.crossOrigin = 'anonymous';
+  hajimiImg.src = 'hajimi.jpg';
+  let memeTextColor = '#ffffff';
+  let memeBgMode = 'default';
+  hajimiImg.onload = () => renderMeme();
+
+  function renderMeme() {
+    const ctx = memeCtx;
+    const w = memeCanvas.width;
+    const h = memeCanvas.height;
+
+    // Backgrounds
+    if (memeBgMode === 'pink') {
+      ctx.fillStyle = '#ffb6c1'; ctx.fillRect(0,0,w,h);
+    } else if (memeBgMode === 'dark') {
+      const g = ctx.createLinearGradient(0,0,w,h);
+      g.addColorStop(0,'#1a0033'); g.addColorStop(1,'#0d001a');
+      ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    } else if (memeBgMode === 'fire') {
+      const g = ctx.createLinearGradient(0,h,0,0);
+      g.addColorStop(0,'#ff4500'); g.addColorStop(0.5,'#ff8c00'); g.addColorStop(1,'#1a0000');
+      ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    } else if (memeBgMode === 'hearts' || memeBgMode === 'laser' || memeBgMode === 'diamond' || memeBgMode === 'rocket') {
+      const g = ctx.createLinearGradient(0,0,w,h);
+      g.addColorStop(0,'#ffe0ec'); g.addColorStop(1,'#ffc0d0');
+      ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
+    } else {
+      ctx.fillStyle = '#fff9f0'; ctx.fillRect(0,0,w,h);
+    }
+
+    if (hajimiImg.complete) {
+      const imgSize = 340;
+      const x = (w - imgSize) / 2;
+      const y = (h - imgSize) / 2 + 10;
+
+      // Draw base image
+      ctx.save();
+      if (memeBgMode === 'laser') {
+        ctx.shadowColor = '#ff0040'; ctx.shadowBlur = 40;
+      }
+      ctx.drawImage(hajimiImg, x, y, imgSize, imgSize);
+      ctx.restore();
+
+      // Overlays
+      if (memeBgMode === 'laser') {
+        ctx.fillStyle = '#ff0000'; ctx.shadowColor = '#ff0000'; ctx.shadowBlur = 30;
+        ctx.beginPath(); ctx.arc(x+imgSize*0.38,y+imgSize*0.42,14,0,Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(x+imgSize*0.62,y+imgSize*0.42,14,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle='#ff0000'; ctx.lineWidth=5; ctx.globalAlpha=0.6;
+        ctx.beginPath(); ctx.moveTo(x+imgSize*0.38,y+imgSize*0.42); ctx.lineTo(0,y+imgSize*0.2); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x+imgSize*0.62,y+imgSize*0.42); ctx.lineTo(w,y+imgSize*0.2); ctx.stroke();
+        ctx.globalAlpha=1; ctx.shadowBlur=0;
+      } else if (memeBgMode === 'diamond') {
+        ctx.font='60px serif'; ctx.fillText('💎',x-40,y+imgSize*0.5); ctx.fillText('💎',x+imgSize+5,y+imgSize*0.5);
+        ctx.font='50px serif'; ctx.fillText('🙌',x+imgSize*0.38,y+imgSize+40);
+      } else if (memeBgMode === 'rocket') {
+        ctx.font='55px serif'; ctx.fillText('🚀',x-30,y+80); ctx.fillText('🚀',x+imgSize,y+imgSize-50);
+        ctx.font='60px serif'; ctx.fillText('🌙',x+imgSize*0.3,y-15);
+      } else if (memeBgMode === 'hearts') {
+        const hearts = ['💕','💖','💗','💓','🩷'];
+        for(let i=0;i<12;i++){
+          ctx.font=(20+Math.random()*30)+'px serif';
+          ctx.fillText(hearts[i%hearts.length], Math.random()*w, Math.random()*h);
+        }
+      } else if (memeBgMode === 'fire') {
+        ctx.font='50px serif';
+        ctx.fillText('🔥',x-35,y+imgSize-30); ctx.fillText('🔥',x+imgSize+5,y+imgSize-30);
+        ctx.fillText('🔥',x+imgSize*0.4,y+imgSize+45);
+      }
+    }
+
+    // Text
+    const topText = document.getElementById('memeTop').value;
+    if(topText) drawMemeText(ctx,topText,w/2,50,w-40);
+    const bottomText = document.getElementById('memeBottom').value;
+    if(bottomText) drawMemeText(ctx,bottomText,w/2,h-30,w-40);
+  }
+
+  function drawMemeText(ctx,text,x,y,maxWidth) {
+    const fontSize = Math.min(52, maxWidth/(text.length*0.6));
+    ctx.font = `bold ${Math.max(fontSize,22)}px "ZCOOL KuaiLe","Quicksand",sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.strokeStyle='#000'; ctx.lineWidth=7; ctx.lineJoin='round';
+    ctx.strokeText(text,x,y);
+    ctx.fillStyle=memeTextColor; ctx.fillText(text,x,y);
+  }
+
+  function setMemeColor(color,btn) {
+    memeTextColor = color;
+    document.querySelectorAll('#colorOptions .meme-opt-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderMeme();
+  }
+
+  function setMemeBg(mode) { memeBgMode=mode; renderMeme(); }
+
+  function downloadCanvasMeme() {
+    const link=document.createElement('a');
+    link.download='hajimi-meme-'+Date.now()+'.png';
+    link.href=memeCanvas.toDataURL('image/png');
+    link.click();
+  }
+
+  function resetMeme() {
+    document.getElementById('memeTop').value='';
+    document.getElementById('memeBottom').value='';
+    memeBgMode='default'; memeTextColor='#ffffff';
+    renderMeme();
+  }
+
+  // ── AI Meme Generator ──
+  const HAJIMI_STYLE = "a cute round-faced Scottish Fold cat called Hajimi (哈基米) with big sparkly eyes, pink blushing cheeks, and a happy open-mouth smile. The cat looks like the viral Hajimi meme cat.";
+
+  function setPrompt(text) { document.getElementById('aiPrompt').value = text; }
+
+  async function generateAIMeme() {
+    const key = document.getElementById('aiKey').value.trim();
+    const prompt = document.getElementById('aiPrompt').value.trim();
+    const loading = document.getElementById('memeLoading');
+    const result = document.getElementById('memeResult');
+    const error = document.getElementById('memeError');
+    error.style.display='none'; result.style.display='none';
+
+    if(!key){ error.style.display='block'; error.textContent='🔑 Please enter your OpenAI API key first 喵！'; return; }
+    if(!prompt){ error.style.display='block'; error.textContent='✏️ Please describe your meme first 喵！'; return; }
+
+    loading.style.display='block';
+    document.getElementById('generateBtn').disabled=true;
+    document.getElementById('generateBtn').textContent='⏳ Generating...';
+
+    try {
+      const fullPrompt = `${HAJIMI_STYLE} Scene: ${prompt}. Style: cute kawaii meme, vibrant colors, fun and shareable. Include the text "$HAJIMI" somewhere in the image.`;
+      const response = await fetch('https://api.openai.com/v1/images/generations',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},
+        body:JSON.stringify({model:'dall-e-3',prompt:fullPrompt,n:1,size:'1024x1024',quality:'standard'}),
+      });
+      const data = await response.json();
+      if(data.error) throw new Error(data.error.message);
+
+      const imageUrl = data.data[0].url;
+      const img = document.getElementById('memeImage');
+      img.src = imageUrl;
+      img.onload = () => { loading.style.display='none'; result.style.display='block'; addToGallery(imageUrl); };
+    } catch(err) {
+      loading.style.display='none'; error.style.display='block';
+      if(err.message.includes('invalid_api_key')||err.message.includes('Incorrect API key')){
+        error.textContent='🔑 Invalid API key. Check your key at platform.openai.com/api-keys 喵！';
+      } else if(err.message.includes('billing')||err.message.includes('hard limit')){
+        error.textContent='💳 Your OpenAI account needs credits. Add them at platform.openai.com/settings/organization/billing 喵！';
+      } else { error.textContent=`❌ ${err.message}`; }
+    } finally {
+      document.getElementById('generateBtn').disabled=false;
+      document.getElementById('generateBtn').textContent='✨ Generate with AI 用AI生成';
+    }
+  }
+
+  function addToGallery(url) {
+    const grid=document.getElementById('galleryGrid');
+    const wrap=document.createElement('div');
+    wrap.style.cssText='border-radius:12px;overflow:hidden;border:2px solid var(--pink-light);cursor:pointer;transition:all 0.2s;';
+    wrap.onmouseover=()=>{wrap.style.borderColor='var(--pink-deep)';wrap.style.transform='scale(1.03)';};
+    wrap.onmouseout=()=>{wrap.style.borderColor='var(--pink-light)';wrap.style.transform='scale(1)';};
+    const img=document.createElement('img');
+    img.src=url; img.style.cssText='width:100%;display:block;';
+    img.onclick=()=>{document.getElementById('memeImage').src=url;document.getElementById('memeResult').style.display='block';};
+    wrap.appendChild(img); grid.insertBefore(wrap,grid.firstChild);
+  }
+
+  async function downloadAIMeme() {
+    const img=document.getElementById('memeImage');
+    try {
+      const r=await fetch(img.src); const blob=await r.blob();
+      const url=URL.createObjectURL(blob);
+      const link=document.createElement('a'); link.download='hajimi-ai-meme-'+Date.now()+'.png'; link.href=url; link.click();
+      URL.revokeObjectURL(url);
+    } catch(e) { window.open(img.src,'_blank'); }
+  }
+</script>
+
+</body>
+</html>
