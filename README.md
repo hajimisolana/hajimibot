@@ -6,11 +6,9 @@
 
 **$HAJIMI** — Pumpfun上最火爆的猫咪 🔥
 
-[Website](https://hajimisolana.xyz) · [Twitter](https://x.com/hajimisolana) · [TikTok](https://tiktok.com/@metroichetnhe12334) · [Community](https://x.com/i/communities/2029915015441219603)
 
 **Contract Address:**
 ```
-79e2P2GxExotT5jtUNNs3Nyp9YzRk28WTJYXHr4ypump
 ```
 
 </div>
@@ -102,12 +100,6 @@ python bot.py
 | `interval <min>` | Change auto-tweet timing |
 | `pause` / `resume` | Toggle auto-tweeting |
 
-## Community 社区
-
-Join the Hajimi family:
-- 🐦 **Twitter:** [@hajimisolana](https://x.com/hajimisolana)
-- 🎵 **TikTok:** [@metroichetnhe12334](https://tiktok.com/@metroichetnhe12334)
-- 👥 **X Community:** [Join here](https://x.com/i/communities/2029915015441219603)
 
 ## Contributing
 
