@@ -4,11 +4,6 @@
 
 </div>
 
----
-
-## What is Hajimi? 哈基米是什么？
-
-Hajimi (哈基米) is the viral kawaii Chinese cat taking over Solana. Born from internet culture, powered by community, and now living on the blockchain.
 
 ## Features 功能
 
