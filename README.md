@@ -1,15 +1,6 @@
-# 🐱 HAJIMI 哈基米 — The Cutest Cat on Solana
-
-<div align="center">
-
-![Hajimi Banner](hajimi_banner.jpg)
-
-**$HAJIMI** — Pumpfun上最火爆的猫咪 🔥
+# 🐱 HAJIMI 哈基米 
 
 
-**Contract Address:**
-```
-```
 
 </div>
 
@@ -19,18 +10,13 @@
 
 Hajimi (哈基米) is the viral kawaii Chinese cat taking over Solana. Born from internet culture, powered by community, and now living on the blockchain.
 
-- 🐾 **Community Takeover (CTO)** — fully community-owned
-- 🤖 **AI-Powered** — DeepSeek chatbot, AI meme generator
-- 🌏 **Bilingual** — Chinese + English community
-- 📱 **TikTok Viral** — millions of views across Douyin & TikTok
-
 ## Features 功能
 
 ### 🐱 Hajimi AI Chatbot
 Talk to Hajimi directly on the website. Powered by [DeepSeek](https://deepseek.com) AI, the chatbot responds in character as the kawaii cat — in Chinese and English.
 
 - Full personality system with kawaii cat behavior
-- Knows about $HAJIMI, Solana, crypto culture
+- Knows about HAJIMI
 - Bilingual support (中文 / English)
 - Conversation memory within session
 
